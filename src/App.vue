@@ -1,39 +1,45 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <!-- <router-link to="/">Home</router-link> -->
-    </div>
-    <router-view />
-  </div>
+  <v-app>
+    <v-app-bar flat class="px-2" app dark color="primary">
+      <router-link class="app-title d-none d-sm-block" to="/">
+        <h2>BuyOrBid</h2>
+      </router-link>
+      <v-spacer />
+      <Search />
+      <v-spacer />
+      <router-link to="/Filter">
+        <v-icon color="white">mdi-filter</v-icon>
+      </router-link>
+      <v-btn elevation="0" @click="dialog = !dialog" fab x-small color="primary">
+        <v-icon color="white">mdi-plus</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <v-main>
+      <router-view />
+      <v-dialog v-model="dialog" max-width="300">
+        <CreatePost v-on:close-modal="dialog = false" />
+      </v-dialog>
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  background-color: black;
-  height: 100%;
-}
+<script>
+export default {
+  components: {
+    Search: () => import("./components/Search.vue"),
+    CreatePost: () => import("./components/CreatePost.vue"),
+  },
+  data: function () {
+    return {
+      dialog: null,
+    };
+  },
+};
+</script>
 
-body {
-  height: 100vh;
-  padding: 0;
-  margin: 0;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+<style scoped>
+.app-title {
+  color: white !important;
+  text-decoration: none;
 }
 </style>
