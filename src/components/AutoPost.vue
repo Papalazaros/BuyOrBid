@@ -1,5 +1,5 @@
 <template>
-  <v-card dark flat class="d-flex flex-column post" align="center">
+  <v-card flat class="d-flex flex-column post" align="center">
     <v-row class="vehicle-header" align="center" no-gutters>
       <v-col cols="10">
         <span>{{ post.systemTitle }}</span>
@@ -7,7 +7,7 @@
       <v-col cols="2">
         <v-menu top offset-y>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn small icon fab color="primary" dark v-bind="attrs" v-on="on">
+            <v-btn small icon fab color="primary" v-bind="attrs" v-on="on">
               <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
           </template>
