@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../components/Home.vue";
-import AutoPost from "../components/AutoPost.vue";
+import CreateAutoPost from "../components/CreateAutoPost.vue";
 import Filter from "../components/Filter.vue";
 
 Vue.use(VueRouter);
@@ -11,9 +11,9 @@ const routes = [{
   name: "Home",
   component: Home
 }, {
-  path: "/AutoPost",
-  name: "AutoPost",
-  component: AutoPost
+  path: "/CreateAutoPost",
+  name: "CreateAutoPost",
+  component: CreateAutoPost
 }, {
   path: "/Filter",
   name: "Filter",

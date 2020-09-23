@@ -1,32 +1,62 @@
 <template>
-  <v-container fluid>
-    <v-row class="pa-2" dense>
-      <v-col v-for="(post, index) in posts" :key="index" cols="12" sm="6" md="4" lg="3" xl="2">
-        <v-card class="pa-2" align="center">
-          <v-row class="vehicle-header" align="center" justify="center" no-gutters>
-            <span>{{ post.systemTitle }}</span>
-          </v-row>
-          <v-row class="py-2" no-gutters>
-            <v-img
-              src="https://upload.wikimedia.org/wikipedia/commons/9/9b/2019_Mercedes-Benz_E220d_SE_Automatic_2.0_Front.jpg"
-            ></v-img>
-          </v-row>
-          <v-row align="center" justify="center" no-gutters>
-            <span>{{ new Date(post.createdDate).toLocaleString() }}</span>
-          </v-row>
-        </v-card>
+  <v-container class="expand" fluid>
+    <div v-if="isLoading" class="expand d-flex align-center justify-center">
+      <v-progress-circular size="128" indeterminate color="primary"></v-progress-circular>
+    </div>
+    <div v-else-if="posts.length === 0" class="expand d-flex align-center justify-center">
+      <h1>No Posts Found</h1>
+    </div>
+    <v-row v-else justify="center">
+      <v-col v-for="post in posts" :key="post.postId" cols="12" sm="6" md="4" lg="3" xl="2">
+        <AutoPost :post="post" />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+const axios = require("axios");
+
+/* eslint-disable no-debugger */
 export default {
+  components: {
+    AutoPost: () => import("./AutoPost.vue"),
+  },
+  mounted: function () {
+    const self = this;
+    axios
+      .get("https://localhost:44309/Posts/Autos")
+      .then(function (response) {
+        // handle success
+        console.log(response);
+        self.posts = response.data;
+        self.isLoading = false;
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+        // self.posts = [];
+        self.isError = true;
+      })
+      .then(function () {
+        // always executed
+        self.isLoading = false;
+      });
+  },
   data: function () {
     return {
+      isLoading: true,
+      isError: true,
       posts: [
         {
           vin: "YV149MTS6G2409804",
+          images: [
+            "https://upload.wikimedia.org/wikipedia/commons/f/f3/2019_Volvo_S60_R-Design_Edition_T5_Automatic_2.0.jpg",
+            "https://cdn-ds.com/media/dfmodels/4208/MainImage-16152.png",
+            "https://upload.wikimedia.org/wikipedia/commons/9/9b/2019_Mercedes-Benz_E220d_SE_Automatic_2.0_Front.jpg",
+          ],
+          views: 100,
+          price: 1000,
           makeId: 3412,
           modelId: 40000,
           series: "S60/S60I",
@@ -55,279 +85,6 @@ export default {
           isPublic: true,
           language: "English",
         },
-        {
-          vin: "WDBGA51E4TA328716",
-          makeId: 3412,
-          modelId: 40000,
-          series: "S500",
-          autoType: "Sedan",
-          transmissionType: "AMT",
-          titleStatus: "Parts",
-          color: "Black",
-          doors: 4,
-          horsepower: 315,
-          displacementInLiters: 5,
-          displacementInCc: 5000,
-          fuelType: "Gasoline",
-          driveType: "Four",
-          year: 1996,
-          trim: "140",
-          cylinders: 8,
-          autoCondition: "Fair",
-          postId: 476,
-          systemTitle: "1996 S500 140 5L 8CYL 4DR",
-          userTitle: "1996 S500 140 5L 8CYL 4DR",
-          createdByUserId: 1,
-          createdDate: "2020-09-22T01:10:41.7248318+00:00",
-          modifiedDate: "2020-09-22T01:10:41.7248313+00:00",
-          isPublic: true,
-          language: "English",
-        },
-        {
-          vin: "1LNLM82W9TY705110",
-          makeId: 3412,
-          modelId: 40000,
-          autoType: "Sedan",
-          transmissionType: "CVT",
-          titleStatus: "None",
-          color: "Black",
-          doors: 4,
-          horsepower: 190,
-          displacementInLiters: 4.6,
-          displacementInCc: 4604.8,
-          fuelType: "Gasoline",
-          driveType: "All",
-          year: 1996,
-          trim: "SIGNATURE",
-          cylinders: 8,
-          autoCondition: "Excellent",
-          postId: 477,
-          systemTitle: "1996 SIGNATURE 4.6L 8CYL 4DR",
-          userTitle: "1996 SIGNATURE 4.6L 8CYL 4DR",
-          createdByUserId: 1,
-          createdDate: "2020-09-22T01:10:42.8114955+00:00",
-          modifiedDate: "2020-09-22T01:10:42.8114944+00:00",
-          isPublic: true,
-          language: "English",
-        },
-        {
-          vin: "KNDJA723XT5517217",
-          makeId: 3412,
-          modelId: 40000,
-          autoType: "SUV",
-          transmissionType: "DCT",
-          titleStatus: "Salvage",
-          color: "Black",
-          doors: 4,
-          horsepower: 0,
-          displacementInLiters: 2,
-          displacementInCc: 2000,
-          fuelType: "Gasoline",
-          driveType: "Four",
-          year: 1996,
-          cylinders: 4,
-          autoCondition: "Fair",
-          postId: 478,
-          systemTitle: "1996 2L 4CYL 4DR",
-          userTitle: "1996 2L 4CYL 4DR",
-          createdByUserId: 1,
-          createdDate: "2020-09-22T01:10:43.1956033+00:00",
-          modifiedDate: "2020-09-22T01:10:43.1956027+00:00",
-          isPublic: true,
-          language: "English",
-        },
-        {
-          vin: "2GCEK19R3T1146294",
-          makeId: 3412,
-          modelId: 40000,
-          series: "CONVENTIONAL CAB",
-          autoType: "Truck",
-          transmissionType: "AMT",
-          titleStatus: "None",
-          color: "Black",
-          doors: 0,
-          horsepower: 0,
-          displacementInLiters: 5.7,
-          displacementInCc: 5700,
-          fuelType: "Gasoline",
-          driveType: "Four",
-          year: 1996,
-          trim: "1/2 TON NOMINAL",
-          cylinders: 8,
-          autoCondition: "Fair",
-          postId: 479,
-          systemTitle: "1996 CONVENTIONAL CAB 1/2 TON NOMINAL 5.7L 8CYL",
-          userTitle: "1996 CONVENTIONAL CAB 1/2 TON NOMINAL 5.7L 8CYL",
-          createdByUserId: 1,
-          createdDate: "2020-09-22T01:10:44.1951997+00:00",
-          modifiedDate: "2020-09-22T01:10:44.195199+00:00",
-          isPublic: true,
-          language: "English",
-        },
-        {
-          vin: "WBABK7320TET60222",
-          makeId: 3412,
-          modelId: 40000,
-          series: "3 SERIES",
-          autoType: "Convertible",
-          transmissionType: "Automatic",
-          titleStatus: "Clean",
-          color: "Black",
-          doors: 2,
-          horsepower: 190,
-          displacementInLiters: 2.8,
-          displacementInCc: 2793,
-          fuelType: "Gasoline",
-          driveType: "Front",
-          year: 1996,
-          cylinders: 6,
-          autoCondition: "Good",
-          postId: 480,
-          systemTitle: "1996 3 SERIES 2.8L 6CYL 2DR",
-          userTitle: "1996 3 SERIES 2.8L 6CYL 2DR",
-          createdByUserId: 1,
-          createdDate: "2020-09-22T01:10:44.7157333+00:00",
-          modifiedDate: "2020-09-22T01:10:44.7157325+00:00",
-          isPublic: true,
-          language: "English",
-        },
-        {
-          vin: "JA3AP47H3SY018398",
-          makeId: 3412,
-          modelId: 40000,
-          series: "HIGH",
-          autoType: "Sedan",
-          transmissionType: "Automatic",
-          titleStatus: "Clean",
-          color: "Black",
-          doors: 4,
-          horsepower: 0,
-          displacementInLiters: 3,
-          displacementInCc: 3000,
-          fuelType: "Hybrid",
-          driveType: "Front",
-          year: 1995,
-          cylinders: 0,
-          autoCondition: "Excellent",
-          postId: 481,
-          systemTitle: "1995 HIGH 3L 4DR",
-          userTitle: "1995 HIGH 3L 4DR",
-          createdByUserId: 1,
-          createdDate: "2020-09-22T01:10:45.7806638+00:00",
-          modifiedDate: "2020-09-22T01:10:45.7806632+00:00",
-          isPublic: true,
-          language: "English",
-        },
-        {
-          vin: "SALHF1349SA654345",
-          makeId: 3412,
-          modelId: 40000,
-          autoType: "SUV",
-          transmissionType: "Automatic",
-          titleStatus: "Salvage",
-          color: "Black",
-          doors: 4,
-          horsepower: 0,
-          displacementInLiters: 4.2,
-          displacementInCc: 4200,
-          fuelType: "Diesel",
-          driveType: "All",
-          year: 1995,
-          trim: "CALIFORNIA MODEL",
-          cylinders: 8,
-          autoCondition: "New",
-          postId: 482,
-          systemTitle: "1995 CALIFORNIA MODEL 4.2L 8CYL 4DR",
-          userTitle: "1995 CALIFORNIA MODEL 4.2L 8CYL 4DR",
-          createdByUserId: 1,
-          createdDate: "2020-09-22T01:10:46.2541201+00:00",
-          modifiedDate: "2020-09-22T01:10:46.2541196+00:00",
-          isPublic: true,
-          language: "English",
-        },
-        {
-          vin: "JH4DC4340SS001220",
-          makeId: 3412,
-          modelId: 40000,
-          series: "RS",
-          autoType: "Hatchback",
-          transmissionType: "Manual",
-          titleStatus: "Rebuilt",
-          color: "Black",
-          doors: 3,
-          horsepower: 142,
-          displacementInLiters: 1.8,
-          displacementInCc: 1835.4,
-          fuelType: "Gasoline",
-          driveType: "Four",
-          year: 1995,
-          cylinders: 4,
-          autoCondition: "Salvage",
-          postId: 483,
-          systemTitle: "1995 RS 1.8L 4CYL 3DR",
-          userTitle: "1995 RS 1.8L 4CYL 3DR",
-          createdByUserId: 1,
-          createdDate: "2020-09-22T01:10:47.7993643+00:00",
-          modifiedDate: "2020-09-22T01:10:47.7993632+00:00",
-          isPublic: true,
-          language: "English",
-        },
-        {
-          vin: "4T1SK12E7PU300490",
-          makeId: 3412,
-          modelId: 40000,
-          series: "LE",
-          autoType: "Sedan",
-          transmissionType: "DCT",
-          titleStatus: "Clean",
-          color: "Black",
-          doors: 4,
-          horsepower: 130,
-          displacementInLiters: 2.2,
-          displacementInCc: 2200,
-          fuelType: "Gasoline",
-          driveType: "Rear",
-          year: 1993,
-          cylinders: 4,
-          engineModel: "5S",
-          autoCondition: "Excellent",
-          postId: 484,
-          systemTitle: "1993 LE 2.2L 4CYL 4DR",
-          userTitle: "1993 LE 2.2L 4CYL 4DR",
-          createdByUserId: 1,
-          createdDate: "2020-09-22T01:10:48.5659696+00:00",
-          modifiedDate: "2020-09-22T01:10:48.5659689+00:00",
-          isPublic: true,
-          language: "English",
-        },
-        {
-          vin: "JM2UF2138N0251579",
-          makeId: 3412,
-          modelId: 40000,
-          series: "B2200",
-          autoType: "Truck",
-          transmissionType: "Automatic",
-          titleStatus: "Clean",
-          color: "Black",
-          doors: 0,
-          horsepower: 0,
-          displacementInLiters: 0,
-          displacementInCc: 0,
-          fuelType: "Hydrogen",
-          driveType: "Front",
-          year: 1992,
-          trim: "LONG BED",
-          cylinders: 0,
-          autoCondition: "Fair",
-          postId: 485,
-          systemTitle: "1992 B2200 LONG BED",
-          userTitle: "1992 B2200 LONG BED",
-          createdByUserId: 1,
-          createdDate: "2020-09-22T01:10:49.9809179+00:00",
-          modifiedDate: "2020-09-22T01:10:49.9809174+00:00",
-          isPublic: true,
-          language: "English",
-        },
       ],
     };
   },
@@ -335,7 +92,7 @@ export default {
 </script>
 
 <style scoped>
-.vehicle-header {
-  height: 50px;
+.expand {
+  height: 100%;
 }
 </style>

@@ -29,7 +29,6 @@ export default {
   },
 };
 </script>
-
 <style>
 .v-toolbar__content {
   padding: 0px;
