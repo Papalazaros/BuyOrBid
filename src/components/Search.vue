@@ -25,7 +25,15 @@ export default {
     };
   },
   methods: {
-    handleSearch() {},
+    handleSearch() {
+      const self = this;
+
+      if (self.$route.name === "Posts") {
+        self.$router.push({ query: { query: self.query } });
+      } else {
+        self.$router.push({ path: "Posts", query: { query: self.query } });
+      }
+    },
   },
 };
 </script>
