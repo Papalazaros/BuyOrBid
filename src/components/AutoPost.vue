@@ -1,20 +1,27 @@
 <template>
-  <v-card flat class="d-flex flex-column post" align="center">
-    <v-row class="vehicle-header" align="center" no-gutters>
-      <v-col cols="10">
+  <v-card flat class="rounded d-flex flex-column post pa-2" align="center">
+    <v-row
+      class="vehicle-header pb-2"
+      justify="center"
+      align="center"
+      no-gutters
+    >
+      <v-col class="vehicle-header-text" justify="center" cols="10">
         <span>{{ post.systemTitle }}</span>
       </v-col>
       <v-col cols="2">
         <v-menu top offset-y>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn small icon fab color="primary" v-bind="attrs" v-on="on">
-              <v-icon>mdi-dots-vertical</v-icon>
+            <v-btn small icon fab v-bind="attrs" v-on="on">
+              <v-icon color="white">mdi-dots-vertical</v-icon>
             </v-btn>
           </template>
           <v-list>
             <v-list-item v-for="(action, index) in actions" :key="index">
               <v-icon>{{ action.icon }}</v-icon>
-              <v-list-item-title class="pl-2">{{ action.label }}</v-list-item-title>
+              <v-list-item-title class="pl-2">{{
+                action.label
+              }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -35,7 +42,11 @@
         </v-btn>
       </v-col>
       <v-col :cols="containsMultipleImages ? 10 : 12">
-        <v-img contain :src="currentImage"></v-img>
+        <v-img
+          lazy-src="https://images.motorcar.com/foundation/controls/vehicle-icons/default-sedan.jpg"
+          contain
+          :src="currentImage"
+        ></v-img>
       </v-col>
       <v-col v-if="containsMultipleImages" cols="1">
         <v-btn @click="nextImage" elevation="0" icon x-small>
@@ -46,16 +57,24 @@
 
     <v-divider />
 
-    <v-row class="post-bottom" justify="center" align="center" no-gutters>
-      <v-col cols="4">
-        <span v-if="post.price" class="price">$ {{ post.price.toFixed(2) }}</span>
+    <v-row class="post-bottom pt-2" justify="center" align="center" no-gutters>
+      <v-col class="text-left" cols="3">
+        <span v-if="post.price" class="price"
+          >$ {{ post.price.toFixed(2) }}</span
+        >
       </v-col>
-      <v-col cols="4">
-        <v-icon class="pr-1">mdi-eye</v-icon>
+      <v-col class="text-center" cols="3">
+        <v-icon color="white" small class="pr-1">mdi-comment</v-icon>
+        <span>{{ post.comments || 0 }}</span>
+      </v-col>
+      <v-col class="text-center" cols="3">
+        <v-icon color="white" small class="pr-1">mdi-eye</v-icon>
         <span>{{ post.views || 0 }}</span>
       </v-col>
-      <v-col cols="4">
-        <span class="date">{{ new Date(post.createdDate).toLocaleDateString() }}</span>
+      <v-col class="text-right" cols="3">
+        <span class="date">{{
+          new Date(post.createdDate).toLocaleDateString()
+        }}</span>
       </v-col>
     </v-row>
   </v-card>
@@ -113,14 +132,20 @@ export default {
 
 <style scoped>
 .vehicle-header {
-  color: black;
   min-height: 50px;
+  max-height: 50px;
+  overflow: hidden;
+}
+
+.vehicle-header-text {
+  overflow: hidden;
   max-height: 50px;
 }
 
 .post {
   height: 400px;
-  border: 1px black solid;
+  color: white;
+  background-color: #1976d2;
 }
 
 .post-image .v-image {
@@ -130,13 +155,6 @@ export default {
 .post-bottom {
   min-height: 50px;
   max-height: 50px;
-}
-
-.price {
-  color: green;
-}
-
-.date {
-  color: grey;
+  font-size: smaller;
 }
 </style>

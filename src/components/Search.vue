@@ -12,6 +12,7 @@
         label="Search all posts"
         append-icon="mdi-magnify"
         @click:append="handleSearch"
+        @keydown.enter="handleSearch"
       />
     </v-col>
   </v-row>
@@ -24,14 +25,24 @@ export default {
       query: null,
     };
   },
+  watch: {
+    "$route.query": function () {
+      const self = this;
+      self.query = self.$route.query.query;
+    },
+  },
+  created: function () {
+    const self = this;
+    self.query = self.$route.query.query;
+  },
   methods: {
     handleSearch() {
       const self = this;
 
-      if (self.$route.name === "Posts") {
-        self.$router.push({ query: { query: self.query } });
-      } else {
+      if (self.$route.name !== "Posts") {
         self.$router.push({ path: "Posts", query: { query: self.query } });
+      } else if (self.$route.query.query !== self.query) {
+        self.$router.push({ query: { query: self.query } });
       }
     },
   },

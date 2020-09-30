@@ -15,7 +15,10 @@
         class="filter px-2"
       >
         <div
-          v-if="filters[filter.propertyName] && Object.keys(filters[filter.propertyName]).length"
+          v-if="
+            filters[filter.propertyName] &&
+            Object.keys(filters[filter.propertyName]).length
+          "
           class="property-header"
         >
           <h4>{{ filter.propertyName }}</h4>
@@ -29,12 +32,27 @@
           step="1"
           clearable
           :label="filter.propertyName"
-          :type="filter.propertyType === 'Int32' || filter.propertySubType === 'Int32' ? 'number' : 'text'"
+          :type="
+            filter.propertyType === 'Int32' ||
+            filter.propertySubType === 'Int32'
+              ? 'number'
+              : 'text'
+          "
           :rules="[rules.characterLimit, ...getRulesFromObject(filter.rules)]"
-          v-if="(filter.propertyType === 'Nullable`1' && (filter.propertySubType === 'String' || filter.propertySubType === 'Int32')) || filter.propertyType === 'String' || filter.propertyType === 'Int32'"
+          v-if="
+            (filter.propertyType === 'Nullable`1' &&
+              (filter.propertySubType === 'String' ||
+                filter.propertySubType === 'Int32')) ||
+            filter.propertyType === 'String' ||
+            filter.propertyType === 'Int32'
+          "
         />
         <v-select
-          v-else-if="filter.propertyType === 'IEnumerable`1' && filter.availableValues && filter.availableValues.length"
+          v-else-if="
+            filter.propertyType === 'IEnumerable`1' &&
+            filter.availableValues &&
+            filter.availableValues.length
+          "
           v-model="filters[filter.propertyName]"
           chips
           multiple
@@ -54,7 +72,11 @@
           transition="scale-transition"
           offset-y
           min-width="250px"
-          v-else-if="(filter.propertyType === 'Nullable`1' && filter.propertySubType === 'DateTime') || filter.propertyType === 'DateTime'"
+          v-else-if="
+            (filter.propertyType === 'Nullable`1' &&
+              filter.propertySubType === 'DateTime') ||
+            filter.propertyType === 'DateTime'
+          "
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
@@ -69,12 +91,18 @@
               :label="filter.propertyName"
             />
           </template>
-          <v-date-picker v-model="filters[filter.propertyName]" no-title scrollable />
+          <v-date-picker
+            v-model="filters[filter.propertyName]"
+            no-title
+            scrollable
+          />
         </v-menu>
       </v-col>
     </v-row>
     <v-row no-gutters class="my-2" align="center" justify="center">
-      <v-btn :disabled="!valid" class="success" @click="getFilteredPosts">Search</v-btn>
+      <v-btn :disabled="!valid" class="success" @click="getFilteredPosts"
+        >Search</v-btn
+      >
     </v-row>
   </v-form>
 </template>
@@ -82,12 +110,12 @@
 const axios = require("axios");
 
 export default {
-  beforeMount: function () {
+  created: function () {
     const self = this;
     self.$store.dispatch("setLoading", true);
 
     axios
-      .get("https://localhost:44309/Autos/GetFilter")
+      .get("https://localhost:44309/Filters")
       .then(function (response) {
         self.availableFilters = response.data;
 
