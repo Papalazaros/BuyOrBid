@@ -10,7 +10,13 @@
       <router-link to="/Filter">
         <v-icon color="white">mdi-filter</v-icon>
       </router-link>
-      <v-btn elevation="0" @click="dialog = !dialog" fab x-small color="primary">
+      <v-btn
+        elevation="0"
+        @click="dialog = !dialog"
+        fab
+        x-small
+        color="primary"
+      >
         <v-icon color="white">mdi-plus</v-icon>
       </v-btn>
     </v-app-bar>
@@ -20,7 +26,11 @@
         v-if="$store.getters.isLoading"
         class="expand d-flex align-center justify-center"
       >
-        <v-progress-circular size="128" indeterminate color="primary"></v-progress-circular>
+        <v-progress-circular
+          size="128"
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
       </v-container>
       <router-view v-show="!$store.getters.isLoading" />
       <v-dialog v-model="dialog" max-width="300">

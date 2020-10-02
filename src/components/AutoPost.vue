@@ -7,7 +7,11 @@
       no-gutters
     >
       <v-col class="vehicle-header-text" justify="center" cols="10">
-        <span>{{ post.systemTitle }}</span>
+        <span
+          ><router-link :to="'/Posts/' + post.postId">{{
+            post.systemTitle
+          }}</router-link></span
+        >
       </v-col>
       <v-col cols="2">
         <v-menu top offset-y>
@@ -32,25 +36,25 @@
 
     <v-row
       align="center"
-      :class="!post.images || post.images.length == 1 ? 'pa-2' : null"
+      :class="!post.postImages || post.postImages.length == 1 ? 'pa-2' : null"
       class="post-image"
       no-gutters
     >
       <v-col v-if="containsMultipleImages" cols="1">
         <v-btn @click="previousImage" elevation="0" icon x-small>
-          <v-icon>mdi-chevron-left</v-icon>
+          <v-icon color="white">mdi-chevron-left</v-icon>
         </v-btn>
       </v-col>
       <v-col :cols="containsMultipleImages ? 10 : 12">
         <v-img
-          lazy-src="https://images.motorcar.com/foundation/controls/vehicle-icons/default-sedan.jpg"
+          lazy-src="https://jsns.dealerappcenter.com/img/default_vehicle_icons/default-inventory-image-car-med.jpg"
           contain
           :src="currentImage"
         ></v-img>
       </v-col>
       <v-col v-if="containsMultipleImages" cols="1">
         <v-btn @click="nextImage" elevation="0" icon x-small>
-          <v-icon>mdi-chevron-right</v-icon>
+          <v-icon color="white">mdi-chevron-right</v-icon>
         </v-btn>
       </v-col>
     </v-row>
@@ -93,12 +97,12 @@ export default {
   },
   computed: {
     currentImage() {
-      return this.post.images && this.post.images.length
-        ? this.post.images[this.imageIndex]
-        : "https://images.motorcar.com/foundation/controls/vehicle-icons/default-sedan.jpg";
+      return this.post.postImages && this.post.postImages.length
+        ? this.post.postImages[this.imageIndex].thumbnailUrl
+        : "https://jsns.dealerappcenter.com/img/default_vehicle_icons/default-inventory-image-car-med.jpg";
     },
     containsMultipleImages() {
-      return this.post.images && this.post.images.length > 1;
+      return this.post.postImages && this.post.postImages.length > 1;
     },
   },
   methods: {
@@ -106,11 +110,11 @@ export default {
       if (this.imageIndex) {
         this.imageIndex--;
       } else {
-        this.imageIndex = this.post.images.length - 1;
+        this.imageIndex = this.post.postImages.length - 1;
       }
     },
     nextImage() {
-      if (this.imageIndex != this.post.images.length - 1) {
+      if (this.imageIndex != this.post.postImages.length - 1) {
         this.imageIndex++;
       } else {
         this.imageIndex = 0;
@@ -137,9 +141,11 @@ export default {
   overflow: hidden;
 }
 
-.vehicle-header-text {
+.vehicle-header-text a {
   overflow: hidden;
   max-height: 50px;
+  color: white;
+  text-decoration: none;
 }
 
 .post {
