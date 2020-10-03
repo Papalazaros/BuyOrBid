@@ -155,7 +155,7 @@ export default {
               (x.dependsOn &&
                 self.filters[x.dependsOn.propertyName] &&
                 self.filters[x.dependsOn.propertyName].includes(
-                  x.dependsOn.propertyValue
+                  x.dependsOn.propertyValue.toString()
                 ))
             ) {
               return x;
@@ -194,14 +194,9 @@ export default {
 
           if (existingFilterValue) {
             if (Array.isArray(self.filters[filterKey])) {
-              if (Array.isArray(existingFilterValue)) {
-                filterObjects[filterKey] = [
-                  ...existingFilterValue,
-                  filterValue,
-                ];
-              } else {
-                filterObjects[filterKey] = [existingFilterValue, filterValue];
-              }
+              filterObjects[filterKey] = [...existingFilterValue, filterValue];
+            } else {
+              filterObjects[filterKey] = [existingFilterValue, filterValue];
             }
           } else {
             if (Array.isArray(self.filters[filterKey])) {
