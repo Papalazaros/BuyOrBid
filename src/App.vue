@@ -10,7 +10,18 @@
       <!-- <router-link to="/Filter">
         <v-icon color="white">mdi-filter</v-icon>
       </router-link> -->
-      <v-icon @click="filterDrawer = !filterDrawer" color="white"
+      <v-icon
+        :disabled="
+          $store.getters.isLoading ||
+          !(
+            availableFilters &&
+            availableFilters.length &&
+            ($router.currentRoute.name == 'Home' ||
+              $router.currentRoute.name == 'Posts')
+          )
+        "
+        @click="filterDrawer = !filterDrawer"
+        color="white"
         >mdi-filter</v-icon
       >
       <v-btn
@@ -48,15 +59,23 @@
         v-model="filterDrawer"
         temporary
         fixed
-        v-show="!$store.getters.isLoading"
-        ><PostFilter />
+        v-if="availableFilters && availableFilters.length"
+        ><PostFilter :availableFilters="availableFilters" />
       </v-navigation-drawer>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import { getFilters } from "./api/axios-client";
+
 export default {
+  created: function () {
+    const self = this;
+    getFilters().then(function (response) {
+      self.availableFilters = response.data;
+    });
+  },
   components: {
     Search: () => import("./components/Search.vue"),
     CreatePost: () => import("./components/CreatePost.vue"),
@@ -67,6 +86,7 @@ export default {
       dialog: null,
       filterDrawer: false,
       loadingComplete: false,
+      availableFilters: [],
     };
   },
 };

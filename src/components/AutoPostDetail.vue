@@ -79,21 +79,18 @@
 </template>
 
 <script>
-const axios = require("axios");
+/* eslint-disable no-debugger */
+import { getPost } from "../api/axios-client";
 
 export default {
   created: function () {
     const self = this;
     self.$store.dispatch("setLoading", true);
 
-    axios
-      .get("https://localhost:44309/AutoPosts/" + self.$route.params.postId)
+    getPost(self.$route.params.postId)
       .then(function (response) {
         self.post = response.data;
         document.title = self.post.userTitle;
-      })
-      .catch(function (error) {
-        console.log(error);
       })
       .then(function () {
         self.$store.dispatch("setLoading", false);

@@ -4,6 +4,8 @@ import Home from "../components/Home.vue";
 import CreateAutoPost from "../components/CreateAutoPost.vue";
 import Posts from "../components/Posts.vue";
 import AutoPostDetail from "../components/AutoPostDetail.vue";
+import NotFound from "../components/NotFound.vue";
+import InternalServerError from "../components/InternalServerError.vue";
 
 Vue.use(VueRouter);
 
@@ -24,7 +26,17 @@ const routes = [{
     path: "/Posts/:postId",
     name: "PostsDetail",
     component: AutoPostDetail
-  }
+  },
+  {
+    path: "/NotFound",
+    name: "NotFound",
+    component: NotFound
+  },
+  {
+    path: "/InternalServerError",
+    name: "InternalServerError",
+    component: InternalServerError
+  },
 ];
 
 const router = new VueRouter({

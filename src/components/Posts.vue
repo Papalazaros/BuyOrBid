@@ -6,7 +6,7 @@
     >
       <h1>No Posts Found</h1>
     </v-row>
-    <v-row justify="center" v-if="totalPages && totalResults">
+    <v-row justify="center" v-if="totalPages">
       <v-col>
         <v-pagination
           v-model="page"
@@ -28,7 +28,7 @@
         <AutoPost :post="post" />
       </v-col>
     </v-row>
-    <v-row justify="center" v-if="totalPages > 1 && totalResults">
+    <v-row justify="center" v-if="totalPages > 1">
       <v-col>
         <v-pagination
           v-model="page"

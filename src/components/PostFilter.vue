@@ -1,9 +1,10 @@
 <template>
   <v-form class="pa-2" ref="form" v-model="valid">
-    <v-row no-gutters align="center" justify="center">
+    <v-row no-gutters justify="center">
       <h2 class>Advanced Search</h2>
     </v-row>
-    <v-row no-gutters align="center" justify="center">
+
+    <v-row no-gutters justify="center">
       <v-col
         cols="12"
         v-for="filter in availableFilters"
@@ -12,22 +13,23 @@
       >
         <div
           v-if="
-            filters[filter.propertyName] &&
-            Object.keys(filters[filter.propertyName]).length
-          "
-          class="property-header"
-        >
-          <h4>{{ filter.propertyName }}</h4>
-        </div>
-        <div
-          class="property-header"
-          v-else-if="
             !(
               filter.propertyType === 'Nullable`1' &&
               filter.propertySubType === 'Boolean'
             ) || filter.propertyType === 'Boolean'
           "
-        />
+        >
+          <div
+            v-if="
+              filters[filter.propertyName] &&
+              Object.keys(filters[filter.propertyName]).length
+            "
+            class="property-header"
+          >
+            <h4>{{ filter.propertyName }}</h4>
+          </div>
+          <div class="property-header" v-else />
+        </div>
         <v-text-field
           v-model.trim="filters[filter.propertyName]"
           single-line
@@ -35,6 +37,7 @@
           flat
           step="1"
           clearable
+          hide-details
           :label="filter.propertyName"
           :type="
             filter.propertyType === 'Int32' ||
@@ -64,6 +67,7 @@
           flat
           outlined
           clearable
+          hide-details
           :items="getAvailableValues[filter.propertyName]"
           :label="filter.propertyName"
           :rules="[rules.selectionLimit]"
@@ -71,15 +75,15 @@
           :item-value="getItemValue"
         />
         <v-checkbox
-          class="checkbox pb-2"
+          class="checkbox pt-2"
           v-model="filters[filter.propertyName]"
-          :label="filter.propertyName"
-          hide-details
           v-else-if="
             (filter.propertyType === 'Nullable`1' &&
               filter.propertySubType === 'Boolean') ||
             filter.propertyType === 'Boolean'
           "
+          hide-details
+          :label="filter.propertyName"
         ></v-checkbox>
         <v-menu
           v-model="menus[filter.propertyName]"
@@ -103,6 +107,7 @@
               outlined
               flat
               clearable
+              hide-details
               :label="filter.propertyName"
             />
           </template>
@@ -114,57 +119,35 @@
         </v-menu>
       </v-col>
     </v-row>
-    <v-row class="pt-2" no-gutters align="center" justify="center">
+    <v-row class="pt-2" no-gutters justify="center">
       <v-btn block :disabled="!valid" color="success" @click="handleFilter()"
-        >Search</v-btn
+        >Apply</v-btn
       >
     </v-row>
-    <v-row class="pt-2" no-gutters align="center" justify="center">
+    <v-row class="pt-2" no-gutters justify="center">
       <v-btn block color="primary" @click="clearFilter()">Clear</v-btn>
     </v-row>
   </v-form>
 </template>
 <script>
-/* eslint-disable no-debugger */
-const axios = require("axios");
-
 export default {
-  created: function () {
-    const self = this;
-    self.$store.dispatch("setLoading", true);
-
-    axios
-      .get("https://localhost:44309/Filters")
-      .then(function (response) {
-        self.availableFilters = response.data;
-        self.initializeDefaultFilters();
-        self.initializeFiltersFromUrl();
-        self.$refs.form.validate();
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .then(function () {
-        self.$store.dispatch("setLoading", false);
-      });
+  props: {
+    availableFilters: {
+      type: Array,
+      required: true,
+      default: function () {
+        return [];
+      },
+    },
   },
+  mounted: function () {
+    const self = this;
+    self.initializeDefaultFilters();
+    self.initializeFiltersFromUrl();
+    self.$refs.form.validate();
+  },
+
   computed: {
-    // errorMessages() {
-    //   const self = this;
-    //   const errorMessages = {};
-
-    //   Object.keys(self.$refs).forEach((key) => {
-    //     if (
-    //       key.indexOf("input") > -1 &&
-    //       self.$refs[key][0].errorBucket.length
-    //     ) {
-    //       errorMessages[key.replace("input", "")] =
-    //         self.$refs[key][0].errorBucket;
-    //     }
-    //   });
-
-    //   return errorMessages;
-    // },
     getAvailableValues() {
       const self = this;
       const availableValues = {};
@@ -337,7 +320,6 @@ export default {
         selectionLimit: (value) =>
           !value.length || value.length <= 10 || "Max 10 selections",
       },
-      availableFilters: [],
     };
   },
 };
