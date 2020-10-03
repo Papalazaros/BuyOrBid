@@ -102,8 +102,13 @@
       </v-col>
     </v-row>
     <v-row class="pa-2" no-gutters align="center" justify="center">
-      <v-btn block :disabled="!valid" class="success" @click="handleFilter()"
+      <v-btn block :disabled="!valid" color="success" @click="handleFilter()"
         >Search</v-btn
+      >
+    </v-row>
+    <v-row class="pa-2" no-gutters align="center" justify="center">
+      <v-btn block :disabled="!valid" color="primary" @click="clearFilter()"
+        >Clear</v-btn
       >
     </v-row>
   </v-form>
@@ -121,19 +126,7 @@ export default {
       .get("https://localhost:44309/Filters")
       .then(function (response) {
         self.availableFilters = response.data;
-
-        for (let i = 0; i < self.availableFilters.length; i++) {
-          if (self.availableFilters[i].propertyType === "IEnumerable`1") {
-            self.$set(self.filters, self.availableFilters[i].propertyName, []);
-          } else {
-            self.$set(
-              self.filters,
-              self.availableFilters[i].propertyName,
-              null
-            );
-          }
-        }
-
+        self.initializeDefaultFilters();
         self.initializeFiltersFromUrl();
         self.$refs.form.validate();
       })
@@ -175,14 +168,23 @@ export default {
     },
   },
   methods: {
+    initializeDefaultFilters() {
+      const self = this;
+      for (let i = 0; i < self.availableFilters.length; i++) {
+        if (self.availableFilters[i].propertyType === "IEnumerable`1") {
+          self.$set(self.filters, self.availableFilters[i].propertyName, []);
+        } else {
+          self.$set(self.filters, self.availableFilters[i].propertyName, null);
+        }
+      }
+    },
     initializeFiltersFromUrl() {
       const self = this;
       const filterString = self.$route.query.filter;
 
       if (filterString) {
-        const filters = filterString.substring(1).split("&");
-
         const filterObjects = {};
+        const filters = filterString.substring(1).split("&");
 
         for (let i = 0; i < filters.length; i++) {
           const filterKv = filters[i].split("=");
@@ -191,19 +193,22 @@ export default {
           const existingFilterValue = filterObjects[filterKey];
 
           if (existingFilterValue) {
-            if (Array.isArray(existingFilterValue)) {
-              filterObjects[filterKey] = [
-                ...filterObjects[filterKey],
-                filterValue,
-              ];
-            } else {
-              filterObjects[filterKey] = [
-                filterObjects[filterKey],
-                filterValue,
-              ];
+            if (Array.isArray(self.filters[filterKey])) {
+              if (Array.isArray(existingFilterValue)) {
+                filterObjects[filterKey] = [
+                  ...existingFilterValue,
+                  filterValue,
+                ];
+              } else {
+                filterObjects[filterKey] = [existingFilterValue, filterValue];
+              }
             }
           } else {
-            filterObjects[filterKey] = filterValue;
+            if (Array.isArray(self.filters[filterKey])) {
+              filterObjects[filterKey] = [filterValue];
+            } else {
+              filterObjects[filterKey] = filterValue;
+            }
           }
         }
 
@@ -239,10 +244,20 @@ export default {
       return rules;
     },
     getItemText(item) {
-      return item.value || item;
+      return item.value ? item.value.toString() : item;
     },
     getItemValue(item) {
-      return item.key || item;
+      return item.key ? item.key.toString() : item;
+    },
+    clearFilter() {
+      const self = this;
+      self.initializeDefaultFilters();
+
+      if (self.$route.query.filter !== null) {
+        let query = Object.assign({}, self.$route.query);
+        delete query.filter;
+        self.$router.replace({ query }).catch(() => {});
+      }
     },
     handleFilter() {
       const self = this;
@@ -284,12 +299,8 @@ export default {
           .join("&");
       }
 
-      if (urlSearchParams.length !== 1) {
-        console.log(urlSearchParams);
-
-        if (self.$route.query.filter !== urlSearchParams) {
-          self.$router.push({ query: { filter: urlSearchParams } });
-        }
+      if (self.$route.query.filter !== urlSearchParams) {
+        self.$router.push({ query: { filter: urlSearchParams } });
       }
     },
   },
