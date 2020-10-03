@@ -1,17 +1,14 @@
 <template>
-  <v-form ref="form" v-model="valid">
-    <v-row class="pt-2" no-gutters align="center" justify="center">
+  <v-form class="pa-2" ref="form" v-model="valid">
+    <v-row no-gutters align="center" justify="center">
       <h2 class>Advanced Search</h2>
     </v-row>
-    <v-row no-gutters>
+    <v-row no-gutters align="center" justify="center">
       <v-col
         cols="12"
-        md="6"
-        lg="4"
-        xl="3"
         v-for="filter in availableFilters"
         :key="filter.propertyName"
-        class="filter px-2"
+        class="filter"
       >
         <div
           v-if="
@@ -22,7 +19,15 @@
         >
           <h4>{{ filter.propertyName }}</h4>
         </div>
-        <div class="property-header" v-else />
+        <div
+          class="property-header"
+          v-else-if="
+            !(
+              filter.propertyType === 'Nullable`1' &&
+              filter.propertySubType === 'Boolean'
+            ) || filter.propertyType === 'Boolean'
+          "
+        />
         <v-text-field
           v-model.trim="filters[filter.propertyName]"
           single-line
@@ -30,7 +35,6 @@
           flat
           step="1"
           clearable
-          hide-details
           :label="filter.propertyName"
           :type="
             filter.propertyType === 'Int32' ||
@@ -60,13 +64,23 @@
           flat
           outlined
           clearable
-          hide-details
           :items="getAvailableValues[filter.propertyName]"
           :label="filter.propertyName"
           :rules="[rules.selectionLimit]"
           :item-text="getItemText"
           :item-value="getItemValue"
         />
+        <v-checkbox
+          class="checkbox pb-2"
+          v-model="filters[filter.propertyName]"
+          :label="filter.propertyName"
+          hide-details
+          v-else-if="
+            (filter.propertyType === 'Nullable`1' &&
+              filter.propertySubType === 'Boolean') ||
+            filter.propertyType === 'Boolean'
+          "
+        ></v-checkbox>
         <v-menu
           v-model="menus[filter.propertyName]"
           :close-on-content-click="true"
@@ -89,7 +103,6 @@
               outlined
               flat
               clearable
-              hide-details
               :label="filter.propertyName"
             />
           </template>
@@ -101,15 +114,13 @@
         </v-menu>
       </v-col>
     </v-row>
-    <v-row class="pa-2" no-gutters align="center" justify="center">
+    <v-row class="pt-2" no-gutters align="center" justify="center">
       <v-btn block :disabled="!valid" color="success" @click="handleFilter()"
         >Search</v-btn
       >
     </v-row>
-    <v-row class="pa-2" no-gutters align="center" justify="center">
-      <v-btn block :disabled="!valid" color="primary" @click="clearFilter()"
-        >Clear</v-btn
-      >
+    <v-row class="pt-2" no-gutters align="center" justify="center">
+      <v-btn block color="primary" @click="clearFilter()">Clear</v-btn>
     </v-row>
   </v-form>
 </template>
@@ -138,6 +149,22 @@ export default {
       });
   },
   computed: {
+    // errorMessages() {
+    //   const self = this;
+    //   const errorMessages = {};
+
+    //   Object.keys(self.$refs).forEach((key) => {
+    //     if (
+    //       key.indexOf("input") > -1 &&
+    //       self.$refs[key][0].errorBucket.length
+    //     ) {
+    //       errorMessages[key.replace("input", "")] =
+    //         self.$refs[key][0].errorBucket;
+    //     }
+    //   });
+
+    //   return errorMessages;
+    // },
     getAvailableValues() {
       const self = this;
       const availableValues = {};
@@ -324,5 +351,10 @@ export default {
 .property-header {
   height: 25px;
   color: #1976d2;
+}
+
+.checkbox {
+  margin: 0px;
+  padding: 0px;
 }
 </style>

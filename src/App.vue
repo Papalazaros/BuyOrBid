@@ -48,6 +48,7 @@
         v-model="filterDrawer"
         temporary
         fixed
+        v-show="!$store.getters.isLoading"
         ><PostFilter />
       </v-navigation-drawer>
     </v-main>

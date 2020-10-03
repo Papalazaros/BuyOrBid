@@ -11,7 +11,7 @@
 
     <v-card-text>
       <v-row class="mb-2 thumbnail-row" align="center" no-gutters>
-        <v-col class="text-right" cols="1">
+        <v-col class="text-center" cols="1">
           <v-btn
             :disabled="thumbnailPage === 0"
             @click="thumbnailPage--"
@@ -34,7 +34,7 @@
             >
               <v-img
                 class="thumbnail"
-                @click="imageIndex = index"
+                @click="imageIndex = thumbnailPage * thumbnailsPerPage + index"
                 lazy-src="https://jsns.dealerappcenter.com/img/default_vehicle_icons/default-inventory-image-car-med.jpg"
                 :src="postImage.thumbnailUrl"
               ></v-img>
@@ -42,7 +42,7 @@
           </v-row>
         </v-col>
 
-        <v-col class="text-left" cols="1">
+        <v-col class="text-center" cols="1">
           <v-btn
             :disabled="
               !(
