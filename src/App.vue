@@ -7,9 +7,12 @@
       <v-spacer />
       <Search />
       <v-spacer />
-      <router-link to="/Filter">
+      <!-- <router-link to="/Filter">
         <v-icon color="white">mdi-filter</v-icon>
-      </router-link>
+      </router-link> -->
+      <v-icon @click="filterDrawer = !filterDrawer" color="white"
+        >mdi-filter</v-icon
+      >
       <v-btn
         elevation="0"
         @click="dialog = !dialog"
@@ -32,10 +35,21 @@
           color="primary"
         ></v-progress-circular>
       </v-container>
+
       <router-view v-show="!$store.getters.isLoading" />
+
       <v-dialog v-model="dialog" max-width="300">
         <CreatePost v-on:close-modal="dialog = false" />
       </v-dialog>
+
+      <v-navigation-drawer
+        width="500px"
+        class="filter-drawer"
+        v-model="filterDrawer"
+        temporary
+        fixed
+        ><PostFilter />
+      </v-navigation-drawer>
     </v-main>
   </v-app>
 </template>
@@ -45,10 +59,12 @@ export default {
   components: {
     Search: () => import("./components/Search.vue"),
     CreatePost: () => import("./components/CreatePost.vue"),
+    PostFilter: () => import("./components/PostFilter.vue"),
   },
   data: function () {
     return {
       dialog: null,
+      filterDrawer: false,
       loadingComplete: false,
     };
   },

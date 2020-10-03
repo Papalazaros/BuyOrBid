@@ -1,84 +1,81 @@
 <template>
-  <v-container fluid v-if="!!post">
-    <v-row class="title-row" no-gutters>
-      <v-col class="title-col text-center" cols="12">
-        {{ post.userTitle }}
-      </v-col>
-    </v-row>
+  <v-card class="px-2 expand" v-if="!!post">
+    <v-card-title>{{ post.userTitle }}</v-card-title>
 
-    <v-row no-gutters>
-      <v-col class="primary-col" cols="12" lg="8">
-        <v-img
-          lazy-src="https://jsns.dealerappcenter.com/img/default_vehicle_icons/default-inventory-image-car-med.jpg"
-          :src="currentImage"
-        ></v-img>
-      </v-col>
+    <v-img
+      max-height="750px"
+      contain
+      lazy-src="https://jsns.dealerappcenter.com/img/default_vehicle_icons/default-inventory-image-car-med.jpg"
+      :src="currentImage"
+    ></v-img>
 
-      <v-col class="primary-col" cols="12" lg="4">
-        <v-row
-          class="text-center"
-          v-for="x in Object.keys(post)"
-          :key="x"
-          no-gutters
-        >
-          <v-col cols="6">
-            <span>{{ x }}</span>
-          </v-col>
-          <v-col cols="6">
-            <span>{{ post[x].toString().substring(0, 10) }}</span>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-
-    <v-row class="pt-2" align="center" no-gutters>
-      <v-col class="text-right" cols="1">
-        <v-btn
-          :disabled="thumbnailPage === 0"
-          @click="thumbnailPage--"
-          elevation="0"
-          icon
-          small
-        >
-          <v-icon color="black">mdi-chevron-left</v-icon>
-        </v-btn>
-      </v-col>
-
-      <v-col class="secondary-col" cols="10">
-        <v-row no-gutters>
-          <v-col
-            :class="index === post.postImages.length - 1 ? null : 'pr-2'"
-            v-for="(postImage, index) in thumbnailsOnPage"
-            :key="postImage.postImageId"
-            cols="4"
+    <v-card-text>
+      <v-row class="mb-2 thumbnail-row" align="center" no-gutters>
+        <v-col class="text-right" cols="1">
+          <v-btn
+            :disabled="thumbnailPage === 0"
+            @click="thumbnailPage--"
+            elevation="0"
+            icon
+            small
           >
-            <v-img
-              @click="imageIndex = index"
-              lazy-src="https://jsns.dealerappcenter.com/img/default_vehicle_icons/default-inventory-image-car-med.jpg"
-              :src="postImage.thumbnailUrl"
-            ></v-img>
-          </v-col>
-        </v-row>
-      </v-col>
+            <v-icon color="black">mdi-chevron-left</v-icon>
+          </v-btn>
+        </v-col>
 
-      <v-col class="text-left" cols="1">
-        <v-btn
-          :disabled="
-            !(
-              post.postImages.length >
-              thumbnailPage * thumbnailsPerPage + thumbnailsPerPage
-            )
-          "
-          @click="thumbnailPage++"
-          elevation="0"
-          icon
-          small
-        >
-          <v-icon color="black">mdi-chevron-right</v-icon>
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-container>
+        <v-col cols="10">
+          <v-row no-gutters>
+            <v-col
+              :class="index === post.postImages.length - 1 ? null : 'pr-2'"
+              v-for="(postImage, index) in thumbnailsOnPage"
+              :key="postImage.postImageId"
+              cols="6"
+              align="center"
+            >
+              <v-img
+                class="thumbnail"
+                @click="imageIndex = index"
+                lazy-src="https://jsns.dealerappcenter.com/img/default_vehicle_icons/default-inventory-image-car-med.jpg"
+                :src="postImage.thumbnailUrl"
+              ></v-img>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <v-col class="text-left" cols="1">
+          <v-btn
+            :disabled="
+              !(
+                post.postImages.length >
+                thumbnailPage * thumbnailsPerPage + thumbnailsPerPage
+              )
+            "
+            @click="thumbnailPage++"
+            elevation="0"
+            icon
+            small
+          >
+            <v-icon color="black">mdi-chevron-right</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-col>
+          <v-simple-table>
+            <template v-slot:default>
+              <tbody>
+                <tr v-for="property in Object.keys(post)" :key="property">
+                  <td>{{ property }}</td>
+                  <td>{{ post[property] }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -93,6 +90,7 @@ export default {
       .get("https://localhost:44309/AutoPosts/" + self.$route.params.postId)
       .then(function (response) {
         self.post = response.data;
+        document.title = self.post.userTitle;
       })
       .catch(function (error) {
         console.log(error);
@@ -129,7 +127,7 @@ export default {
       post: null,
       imageIndex: 0,
       thumbnailPage: 0,
-      thumbnailsPerPage: 3,
+      thumbnailsPerPage: 2,
       actions: [
         { label: "Watch", icon: "mdi-alarm" },
         { label: "Hide", icon: "mdi-eye-off" },
@@ -141,4 +139,14 @@ export default {
 </script>
 
 <style scoped>
+.v-card__title {
+  justify-content: center;
+}
+
+.thumbnail-row {
+  height: 150px;
+}
+.thumbnail {
+  height: 150px;
+}
 </style>

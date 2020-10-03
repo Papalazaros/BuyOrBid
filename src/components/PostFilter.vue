@@ -1,9 +1,8 @@
 <template>
-  <v-form class="ma-2" ref="form" v-model="valid">
-    <v-row no-gutters align="center" justify="center">
+  <v-form ref="form" v-model="valid">
+    <v-row class="pt-2" no-gutters align="center" justify="center">
       <h2 class>Advanced Search</h2>
     </v-row>
-    <v-divider class="my-2" />
     <v-row no-gutters>
       <v-col
         cols="12"
@@ -31,6 +30,7 @@
           flat
           step="1"
           clearable
+          hide-details
           :label="filter.propertyName"
           :type="
             filter.propertyType === 'Int32' ||
@@ -60,6 +60,7 @@
           flat
           outlined
           clearable
+          hide-details
           :items="getAvailableValues[filter.propertyName]"
           :label="filter.propertyName"
           :rules="[rules.selectionLimit]"
@@ -88,6 +89,7 @@
               outlined
               flat
               clearable
+              hide-details
               :label="filter.propertyName"
             />
           </template>
@@ -99,14 +101,15 @@
         </v-menu>
       </v-col>
     </v-row>
-    <v-row no-gutters class="my-2" align="center" justify="center">
-      <v-btn :disabled="!valid" class="success" @click="getFilteredPosts"
+    <v-row class="pa-2" no-gutters align="center" justify="center">
+      <v-btn block :disabled="!valid" class="success" @click="handleFilter()"
         >Search</v-btn
       >
     </v-row>
   </v-form>
 </template>
 <script>
+/* eslint-disable no-debugger */
 const axios = require("axios");
 
 export default {
@@ -131,6 +134,7 @@ export default {
           }
         }
 
+        self.initializeFiltersFromUrl();
         self.$refs.form.validate();
       })
       .catch(function (error) {
@@ -171,6 +175,43 @@ export default {
     },
   },
   methods: {
+    initializeFiltersFromUrl() {
+      const self = this;
+      const filterString = self.$route.query.filter;
+
+      if (filterString) {
+        const filters = filterString.substring(1).split("&");
+
+        const filterObjects = {};
+
+        for (let i = 0; i < filters.length; i++) {
+          const filterKv = filters[i].split("=");
+          const filterKey = filterKv[0];
+          const filterValue = filterKv[1];
+          const existingFilterValue = filterObjects[filterKey];
+
+          if (existingFilterValue) {
+            if (Array.isArray(existingFilterValue)) {
+              filterObjects[filterKey] = [
+                ...filterObjects[filterKey],
+                filterValue,
+              ];
+            } else {
+              filterObjects[filterKey] = [
+                filterObjects[filterKey],
+                filterValue,
+              ];
+            }
+          } else {
+            filterObjects[filterKey] = filterValue;
+          }
+        }
+
+        Object.keys(filterObjects).forEach((key) => {
+          self.filters[key] = filterObjects[key];
+        });
+      }
+    },
     getRulesFromObject(rulesObjects) {
       if (!rulesObjects || !rulesObjects.length) return [];
 
@@ -203,12 +244,13 @@ export default {
     getItemValue(item) {
       return item.key || item;
     },
-    getFilteredPosts() {
+    handleFilter() {
+      const self = this;
       const searchParams = {};
       const additionalParams = [];
 
-      Object.keys(this.filters).forEach((filterKey) => {
-        const filterValue = this.filters[filterKey];
+      Object.keys(self.filters).forEach((filterKey) => {
+        const filterValue = self.filters[filterKey];
 
         if (
           filterValue != null &&
@@ -244,6 +286,10 @@ export default {
 
       if (urlSearchParams.length !== 1) {
         console.log(urlSearchParams);
+
+        if (self.$route.query.filter !== urlSearchParams) {
+          self.$router.push({ query: { filter: urlSearchParams } });
+        }
       }
     },
   },

@@ -40,9 +40,14 @@ export default {
       const self = this;
 
       if (self.$route.name !== "Posts") {
-        self.$router.push({ path: "Posts", query: { query: self.query } });
+        self.$router.push({
+          path: "Posts",
+          query: { query: self.query, filter: self.$route.query.filter },
+        });
       } else if (self.$route.query.query !== self.query) {
-        self.$router.push({ query: { query: self.query } });
+        self.$router.push({
+          query: { query: self.query, filter: self.$route.query.filter },
+        });
       }
     },
   },

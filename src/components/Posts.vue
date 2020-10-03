@@ -74,6 +74,12 @@ export default {
         self.$store.dispatch("setLoading", true);
       }
 
+      let url = "https://localhost:44309/Search/Autos";
+
+      if (self.$route.query.filter) {
+        url += self.$route.query.filter;
+      }
+
       const params = {
         query: self.$route.query.query,
         page: self.page,
@@ -81,7 +87,7 @@ export default {
       };
 
       axios
-        .get("https://localhost:44309/Search/Autos", { params })
+        .get(url, { params })
         .then(function (response) {
           self.posts = response.data.results;
           self.totalResults = response.data.total;
