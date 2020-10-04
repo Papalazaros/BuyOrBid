@@ -16,7 +16,8 @@
     >
       <v-col>
         <v-pagination
-          v-model="page"
+          :value="page"
+          @input="setPage"
           :length="totalPages"
           :total-visible="totalVisiblePages"
           :disabled="totalPages === 1"
@@ -31,6 +32,7 @@
         sm="6"
         md="4"
         lg="3"
+        xl="2"
       >
         <AutoPost :post="post" />
       </v-col>
@@ -42,7 +44,8 @@
     >
       <v-col>
         <v-pagination
-          v-model="page"
+          :value="page"
+          @input="setPage"
           :length="totalPages"
           :total-visible="totalVisiblePages"
         />
@@ -63,9 +66,6 @@ export default {
       this.page = 1;
       this.updatePosts();
     },
-    page: function () {
-      this.updatePosts();
-    },
   },
   computed: {
     totalPages() {
@@ -79,10 +79,13 @@ export default {
     self.updatePosts();
   },
   methods: {
+    setPage(page) {
+      const self = this;
+      self.page = page;
+      self.updatePosts();
+    },
     updatePosts() {
       const self = this;
-      if (self.requestSent) return;
-      self.requestSent = true;
 
       let url = "https://localhost:44309/Search/Autos";
 
@@ -119,7 +122,6 @@ export default {
       pageSize: 12,
       totalResults: 0,
       totalVisiblePages: 6,
-      requestSent: false,
     };
   },
 };

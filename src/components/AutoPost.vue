@@ -224,6 +224,10 @@ export default {
   background-color: #1976d2;
 }
 
+.post-image .v-image {
+  max-height: 200px;
+}
+
 .post-bottom {
   min-height: 50px;
   max-height: 50px;
