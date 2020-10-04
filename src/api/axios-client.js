@@ -10,10 +10,8 @@ instance.interceptors.response.use(function (response) {
     store.dispatch("setLoading", false);
     return response;
 }, function (error) {
-    console.log(error);
-
-    if ((!error.response || error.response.status === 500) && router.currentRoute.name !== "InternalServerError") {
-        router.push("/InternalServerError");
+    if ((!error.response || error.response.status === 500) && router.currentRoute.name !== "Error") {
+        router.push("/Error");
     } else if (error.response.status === 404 && router.currentRoute.name !== "NotFound") {
         router.push("/NotFound");
     }

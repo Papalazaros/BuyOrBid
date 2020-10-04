@@ -44,9 +44,7 @@
             >
               <v-icon>{{ action.icon }}</v-icon>
               <v-list-item-title class="pl-2">
-                {{
-                  action.label
-                }}
+                {{ action.label }}
               </v-list-item-title>
             </v-list-item>
           </v-list>
@@ -221,13 +219,9 @@ export default {
 }
 
 .post {
-  height: 400px;
+  height: 350px;
   color: white;
   background-color: #1976d2;
-}
-
-.post-image .v-image {
-  max-height: 250px;
 }
 
 .post-bottom {

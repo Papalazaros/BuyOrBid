@@ -6,7 +6,7 @@
     <router-link to="/CreateAutoPost">
       <v-container
         fluid
-        @click="$emit('close-modal');"
+        @click="$emit('close')"
         class="post"
       >
         <h3>Auto</h3>

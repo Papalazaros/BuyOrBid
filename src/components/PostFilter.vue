@@ -8,15 +8,6 @@
       no-gutters
       justify="center"
     >
-      <h2 class>
-        Advanced Search
-      </h2>
-    </v-row>
-
-    <v-row
-      no-gutters
-      justify="center"
-    >
       <v-col
         cols="12"
         v-for="filter in availableFilters"
@@ -161,6 +152,19 @@
         Clear
       </v-btn>
     </v-row>
+    <v-row
+      class="pt-2"
+      no-gutters
+      justify="center"
+    >
+      <v-btn
+        block
+        color="error"
+        @click="$emit('close')"
+      >
+        Cancel
+      </v-btn>
+    </v-row>
   </v-form>
 </template>
 <script>
@@ -290,12 +294,6 @@ export default {
     clearFilter() {
       const self = this;
       self.initializeDefaultFilters();
-
-      if (self.$route.query.filter !== null) {
-        let query = Object.assign({}, self.$route.query);
-        delete query.filter;
-        self.$router.replace({ query }).catch(() => {});
-      }
     },
     handleFilter() {
       const self = this;
@@ -338,7 +336,13 @@ export default {
       }
 
       if (self.$route.query.filter !== urlSearchParams) {
-        self.$router.push({ query: { filter: urlSearchParams } });
+        if (urlSearchParams === "?") {
+          let query = Object.assign({}, self.$route.query);
+          delete query.filter;
+          self.$router.replace({ query }).catch(() => {});
+        } else {
+          self.$router.push({ query: { filter: urlSearchParams } });
+        }
       }
     },
   },

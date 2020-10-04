@@ -99,7 +99,6 @@
 </template>
 
 <script>
-/* eslint-disable no-debugger */
 import { getPost } from "../api/axios-client";
 
 export default {

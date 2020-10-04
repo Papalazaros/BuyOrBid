@@ -57,11 +57,8 @@
 
       <router-view v-show="!$store.getters.isLoading" />
 
-      <v-dialog
-        v-model="dialog"
-        max-width="300"
-      >
-        <CreatePost @close-modal="dialog = false" />
+      <v-dialog v-model="dialog">
+        <CreatePost @close="dialog = false" />
       </v-dialog>
 
       <v-navigation-drawer
@@ -70,9 +67,11 @@
         v-model="filterDrawer"
         temporary
         fixed
-        v-if="availableFilters && availableFilters.length"
       >
-        <PostFilter :available-filters="availableFilters" />
+        <PostFilter
+          @close="filterDrawer = false"
+          :available-filters="availableFilters"
+        />
       </v-navigation-drawer>
     </v-main>
   </v-app>

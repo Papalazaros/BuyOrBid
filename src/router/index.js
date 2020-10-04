@@ -33,8 +33,8 @@ const routes = [{
     component: NotFound
   },
   {
-    path: "/InternalServerError",
-    name: "InternalServerError",
+    path: "/Error",
+    name: "Error",
     component: InternalServerError
   },
 ];

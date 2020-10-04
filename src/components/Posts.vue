@@ -10,6 +10,7 @@
       <h1>No Posts Found</h1>
     </v-row>
     <v-row
+      no-gutters
       justify="center"
       v-if="totalPages"
     >
@@ -35,6 +36,7 @@
       </v-col>
     </v-row>
     <v-row
+      no-gutters
       justify="center"
       v-if="totalPages > 1"
     >
@@ -58,6 +60,7 @@ export default {
   },
   watch: {
     "$route.query": function () {
+      this.page = 1;
       this.updatePosts();
     },
     page: function () {
@@ -71,13 +74,15 @@ export default {
     },
   },
   created: function () {
-    this.updatePosts();
+    const self = this;
+    self.$store.dispatch("setLoading", true);
+    self.updatePosts();
   },
   methods: {
     updatePosts() {
       const self = this;
-
-      self.$store.dispatch("setLoading", true);
+      if (self.requestSent) return;
+      self.requestSent = true;
 
       let url = "https://localhost:44309/Search/Autos";
 
@@ -103,6 +108,7 @@ export default {
         })
         .then(function () {
           self.$store.dispatch("setLoading", false);
+          self.requestSent = false;
         });
     },
   },
@@ -110,9 +116,10 @@ export default {
     return {
       posts: [],
       page: 1,
-      pageSize: 10,
+      pageSize: 12,
       totalResults: 0,
-      totalVisiblePages: 5,
+      totalVisiblePages: 6,
+      requestSent: false,
     };
   },
 };
