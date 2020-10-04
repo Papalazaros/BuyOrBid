@@ -1,6 +1,12 @@
 <template>
-  <v-row no-gutters align="center">
-    <v-col class="px-1" cols="12">
+  <v-row
+    no-gutters
+    align="center"
+  >
+    <v-col
+      class="px-1"
+      cols="12"
+    >
       <v-text-field
         v-model.trim="query"
         light

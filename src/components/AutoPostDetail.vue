@@ -1,5 +1,8 @@
 <template>
-  <v-card class="px-2 expand" v-if="!!post">
+  <v-card
+    class="px-2 expand"
+    v-if="!!post"
+  >
     <v-card-title>{{ post.userTitle }}</v-card-title>
 
     <v-img
@@ -7,11 +10,18 @@
       contain
       lazy-src="https://jsns.dealerappcenter.com/img/default_vehicle_icons/default-inventory-image-car-med.jpg"
       :src="currentImage"
-    ></v-img>
+    />
 
     <v-card-text>
-      <v-row class="mb-2 thumbnail-row" align="center" no-gutters>
-        <v-col class="text-center" cols="1">
+      <v-row
+        class="mb-2 thumbnail-row"
+        align="center"
+        no-gutters
+      >
+        <v-col
+          class="text-center"
+          cols="1"
+        >
           <v-btn
             :disabled="thumbnailPage === 0"
             @click="thumbnailPage--"
@@ -19,7 +29,9 @@
             icon
             small
           >
-            <v-icon color="black">mdi-chevron-left</v-icon>
+            <v-icon color="black">
+              mdi-chevron-left
+            </v-icon>
           </v-btn>
         </v-col>
 
@@ -37,12 +49,15 @@
                 @click="imageIndex = thumbnailPage * thumbnailsPerPage + index"
                 lazy-src="https://jsns.dealerappcenter.com/img/default_vehicle_icons/default-inventory-image-car-med.jpg"
                 :src="postImage.thumbnailUrl"
-              ></v-img>
+              />
             </v-col>
           </v-row>
         </v-col>
 
-        <v-col class="text-center" cols="1">
+        <v-col
+          class="text-center"
+          cols="1"
+        >
           <v-btn
             :disabled="
               !(
@@ -55,7 +70,9 @@
             icon
             small
           >
-            <v-icon color="black">mdi-chevron-right</v-icon>
+            <v-icon color="black">
+              mdi-chevron-right
+            </v-icon>
           </v-btn>
         </v-col>
       </v-row>
@@ -65,7 +82,10 @@
           <v-simple-table>
             <template v-slot:default>
               <tbody>
-                <tr v-for="property in Object.keys(post)" :key="property">
+                <tr
+                  v-for="property in Object.keys(post)"
+                  :key="property"
+                >
                   <td>{{ property }}</td>
                   <td>{{ post[property] }}</td>
                 </tr>

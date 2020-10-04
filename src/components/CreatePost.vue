@@ -1,9 +1,21 @@
 <template>
-  <v-card class="pa-2" align="center">
+  <v-card
+    class="pa-2"
+    align="center"
+  >
     <router-link to="/CreateAutoPost">
-      <v-container fluid @click="$emit('close-modal');" class="post">
+      <v-container
+        fluid
+        @click="$emit('close-modal');"
+        class="post"
+      >
         <h3>Auto</h3>
-        <v-icon x-large color="white">mdi-car</v-icon>
+        <v-icon
+          x-large
+          color="white"
+        >
+          mdi-car
+        </v-icon>
       </v-container>
     </router-link>
   </v-card>

@@ -1,10 +1,22 @@
 <template>
-  <v-form class="pa-2" ref="form" v-model="valid">
-    <v-row no-gutters justify="center">
-      <h2 class>Advanced Search</h2>
+  <v-form
+    class="pa-2"
+    ref="form"
+    v-model="valid"
+  >
+    <v-row
+      no-gutters
+      justify="center"
+    >
+      <h2 class>
+        Advanced Search
+      </h2>
     </v-row>
 
-    <v-row no-gutters justify="center">
+    <v-row
+      no-gutters
+      justify="center"
+    >
       <v-col
         cols="12"
         v-for="filter in availableFilters"
@@ -22,13 +34,16 @@
           <div
             v-if="
               filters[filter.propertyName] &&
-              Object.keys(filters[filter.propertyName]).length
+                Object.keys(filters[filter.propertyName]).length
             "
             class="property-header"
           >
             <h4>{{ filter.propertyName }}</h4>
           </div>
-          <div class="property-header" v-else />
+          <div
+            class="property-header"
+            v-else
+          />
         </div>
         <v-text-field
           v-model.trim="filters[filter.propertyName]"
@@ -41,7 +56,7 @@
           :label="filter.propertyName"
           :type="
             filter.propertyType === 'Int32' ||
-            filter.propertySubType === 'Int32'
+              filter.propertySubType === 'Int32'
               ? 'number'
               : 'text'
           "
@@ -50,15 +65,15 @@
             (filter.propertyType === 'Nullable`1' &&
               (filter.propertySubType === 'String' ||
                 filter.propertySubType === 'Int32')) ||
-            filter.propertyType === 'String' ||
-            filter.propertyType === 'Int32'
+              filter.propertyType === 'String' ||
+              filter.propertyType === 'Int32'
           "
         />
         <v-select
           v-else-if="
             filter.propertyType === 'IEnumerable`1' &&
-            filter.availableValues &&
-            filter.availableValues.length
+              filter.availableValues &&
+              filter.availableValues.length
           "
           v-model="filters[filter.propertyName]"
           chips
@@ -80,11 +95,11 @@
           v-else-if="
             (filter.propertyType === 'Nullable`1' &&
               filter.propertySubType === 'Boolean') ||
-            filter.propertyType === 'Boolean'
+              filter.propertyType === 'Boolean'
           "
           hide-details
           :label="filter.propertyName"
-        ></v-checkbox>
+        />
         <v-menu
           v-model="menus[filter.propertyName]"
           :close-on-content-click="true"
@@ -94,7 +109,7 @@
           v-else-if="
             (filter.propertyType === 'Nullable`1' &&
               filter.propertySubType === 'DateTime') ||
-            filter.propertyType === 'DateTime'
+              filter.propertyType === 'DateTime'
           "
         >
           <template v-slot:activator="{ on, attrs }">
@@ -119,13 +134,32 @@
         </v-menu>
       </v-col>
     </v-row>
-    <v-row class="pt-2" no-gutters justify="center">
-      <v-btn block :disabled="!valid" color="success" @click="handleFilter()"
-        >Apply</v-btn
+    <v-row
+      class="pt-2"
+      no-gutters
+      justify="center"
+    >
+      <v-btn
+        block
+        :disabled="!valid"
+        color="success"
+        @click="handleFilter()"
       >
+        Apply
+      </v-btn>
     </v-row>
-    <v-row class="pt-2" no-gutters justify="center">
-      <v-btn block color="primary" @click="clearFilter()">Clear</v-btn>
+    <v-row
+      class="pt-2"
+      no-gutters
+      justify="center"
+    >
+      <v-btn
+        block
+        color="primary"
+        @click="clearFilter()"
+      >
+        Clear
+      </v-btn>
     </v-row>
   </v-form>
 </template>

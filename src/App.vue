@@ -1,7 +1,15 @@
 <template>
   <v-app>
-    <v-app-bar flat class="px-2" app color="primary">
-      <router-link class="app-title d-none d-sm-block" to="/">
+    <v-app-bar
+      flat
+      class="px-2"
+      app
+      color="primary"
+    >
+      <router-link
+        class="app-title d-none d-sm-block"
+        to="/"
+      >
         <h2>BuyOrBid</h2>
       </router-link>
       <v-spacer />
@@ -10,17 +18,18 @@
       <v-icon
         :disabled="
           $store.getters.isLoading ||
-          !(
-            availableFilters &&
-            availableFilters.length &&
-            ($router.currentRoute.name == 'Home' ||
-              $router.currentRoute.name == 'Posts')
-          )
+            !(
+              availableFilters &&
+              availableFilters.length &&
+              ($router.currentRoute.name == 'Home' ||
+                $router.currentRoute.name == 'Posts')
+            )
         "
         @click="filterDrawer = !filterDrawer"
         color="white"
-        >mdi-filter</v-icon
       >
+        mdi-filter
+      </v-icon>
       <v-btn
         elevation="0"
         @click="dialog = !dialog"
@@ -28,7 +37,9 @@
         x-small
         color="primary"
       >
-        <v-icon color="white">mdi-plus</v-icon>
+        <v-icon color="white">
+          mdi-plus
+        </v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>
@@ -41,13 +52,16 @@
           size="128"
           indeterminate
           color="primary"
-        ></v-progress-circular>
+        />
       </v-container>
 
       <router-view v-show="!$store.getters.isLoading" />
 
-      <v-dialog v-model="dialog" max-width="300">
-        <CreatePost v-on:close-modal="dialog = false" />
+      <v-dialog
+        v-model="dialog"
+        max-width="300"
+      >
+        <CreatePost @close-modal="dialog = false" />
       </v-dialog>
 
       <v-navigation-drawer
@@ -57,7 +71,8 @@
         temporary
         fixed
         v-if="availableFilters && availableFilters.length"
-        ><PostFilter :availableFilters="availableFilters" />
+      >
+        <PostFilter :available-filters="availableFilters" />
       </v-navigation-drawer>
     </v-main>
   </v-app>

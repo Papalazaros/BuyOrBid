@@ -1,31 +1,53 @@
 <template>
-  <v-card flat class="rounded d-flex flex-column post pa-2" align="center">
+  <v-card
+    flat
+    class="rounded d-flex flex-column post pa-2"
+    align="center"
+  >
     <v-row
       class="vehicle-header pb-2"
       justify="center"
       align="center"
       no-gutters
     >
-      <v-col class="vehicle-header-text" justify="center" cols="10">
-        <span
-          ><router-link :to="'/Posts/' + post.postId">{{
-            post.systemTitle
-          }}</router-link></span
-        >
+      <v-col
+        class="vehicle-header-text"
+        justify="center"
+        cols="10"
+      >
+        <span><router-link :to="'/Posts/' + post.postId">{{
+          post.systemTitle
+        }}</router-link></span>
       </v-col>
       <v-col cols="2">
-        <v-menu top offset-y>
+        <v-menu
+          top
+          offset-y
+        >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn small icon fab v-bind="attrs" v-on="on">
-              <v-icon color="white">mdi-dots-vertical</v-icon>
+            <v-btn
+              small
+              icon
+              fab
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon color="white">
+                mdi-dots-vertical
+              </v-icon>
             </v-btn>
           </template>
           <v-list>
-            <v-list-item v-for="(action, index) in actions" :key="index">
+            <v-list-item
+              v-for="(action, index) in actions"
+              :key="index"
+            >
               <v-icon>{{ action.icon }}</v-icon>
-              <v-list-item-title class="pl-2">{{
-                action.label
-              }}</v-list-item-title>
+              <v-list-item-title class="pl-2">
+                {{
+                  action.label
+                }}
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -40,9 +62,19 @@
       class="post-image"
       no-gutters
     >
-      <v-col v-if="containsMultipleImages" cols="1">
-        <v-btn @click="previousImage" elevation="0" icon x-small>
-          <v-icon color="white">mdi-chevron-left</v-icon>
+      <v-col
+        v-if="containsMultipleImages"
+        cols="1"
+      >
+        <v-btn
+          @click="previousImage"
+          elevation="0"
+          icon
+          x-small
+        >
+          <v-icon color="white">
+            mdi-chevron-left
+          </v-icon>
         </v-btn>
       </v-col>
       <v-col :cols="containsMultipleImages ? 10 : 12">
@@ -50,32 +82,72 @@
           lazy-src="https://jsns.dealerappcenter.com/img/default_vehicle_icons/default-inventory-image-car-med.jpg"
           contain
           :src="currentImage"
-        ></v-img>
+        />
       </v-col>
-      <v-col v-if="containsMultipleImages" cols="1">
-        <v-btn @click="nextImage" elevation="0" icon x-small>
-          <v-icon color="white">mdi-chevron-right</v-icon>
+      <v-col
+        v-if="containsMultipleImages"
+        cols="1"
+      >
+        <v-btn
+          @click="nextImage"
+          elevation="0"
+          icon
+          x-small
+        >
+          <v-icon color="white">
+            mdi-chevron-right
+          </v-icon>
         </v-btn>
       </v-col>
     </v-row>
 
     <v-divider />
 
-    <v-row class="post-bottom pt-2" justify="center" align="center" no-gutters>
-      <v-col class="text-left" cols="3">
-        <span v-if="post.price" class="price"
-          >$ {{ post.price.toFixed(2) }}</span
-        >
+    <v-row
+      class="post-bottom pt-2"
+      justify="center"
+      align="center"
+      no-gutters
+    >
+      <v-col
+        class="text-left"
+        cols="3"
+      >
+        <span
+          v-if="post.price"
+          class="price"
+        >$ {{ post.price.toFixed(2) }}</span>
       </v-col>
-      <v-col class="text-center" cols="3">
-        <v-icon color="white" small class="pr-1">mdi-comment</v-icon>
+      <v-col
+        class="text-center"
+        cols="3"
+      >
+        <v-icon
+          color="white"
+          small
+          class="pr-1"
+        >
+          mdi-comment
+        </v-icon>
         <span>{{ post.comments || 0 }}</span>
       </v-col>
-      <v-col class="text-center" cols="3">
-        <v-icon color="white" small class="pr-1">mdi-eye</v-icon>
+      <v-col
+        class="text-center"
+        cols="3"
+      >
+        <v-icon
+          color="white"
+          small
+          class="pr-1"
+        >
+          mdi-eye
+        </v-icon>
         <span>{{ post.views || 0 }}</span>
       </v-col>
-      <v-col class="text-right" cols="3">
+      <v-col
+        class="text-right"
+        cols="3"
+      >
         <span class="date">{{
           new Date(post.createdDate).toLocaleDateString()
         }}</span>

@@ -1,19 +1,25 @@
 <template>
-  <v-container class="expand" fluid>
+  <v-container
+    class="expand"
+    fluid
+  >
     <v-row
       v-if="posts.length === 0"
       class="expand d-flex align-center justify-center"
     >
       <h1>No Posts Found</h1>
     </v-row>
-    <v-row justify="center" v-if="totalPages">
+    <v-row
+      justify="center"
+      v-if="totalPages"
+    >
       <v-col>
         <v-pagination
           v-model="page"
           :length="totalPages"
           :total-visible="totalVisiblePages"
           :disabled="totalPages === 1"
-        ></v-pagination>
+        />
       </v-col>
     </v-row>
     <v-row justify="center">
@@ -28,13 +34,16 @@
         <AutoPost :post="post" />
       </v-col>
     </v-row>
-    <v-row justify="center" v-if="totalPages > 1">
+    <v-row
+      justify="center"
+      v-if="totalPages > 1"
+    >
       <v-col>
         <v-pagination
           v-model="page"
           :length="totalPages"
           :total-visible="totalVisiblePages"
-        ></v-pagination>
+        />
       </v-col>
     </v-row>
   </v-container>
