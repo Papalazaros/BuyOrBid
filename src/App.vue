@@ -7,9 +7,6 @@
       <v-spacer />
       <Search />
       <v-spacer />
-      <!-- <router-link to="/Filter">
-        <v-icon color="white">mdi-filter</v-icon>
-      </router-link> -->
       <v-icon
         :disabled="
           $store.getters.isLoading ||
@@ -75,6 +72,13 @@ export default {
     getFilters().then(function (response) {
       self.availableFilters = response.data;
     });
+  },
+  watch: {
+    "$store.getters.isLoading": function (newValue) {
+      if (newValue) {
+        this.filterDrawer = false;
+      }
+    },
   },
   components: {
     Search: () => import("./components/Search.vue"),

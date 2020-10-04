@@ -1,9 +1,9 @@
 import router from "../router";
 import store from "../store";
-const axios = require("axios");
+import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'https://localhost:44309/',
+    baseURL: "https://localhost:44309/"
 });
 
 instance.interceptors.response.use(function (response) {
@@ -29,10 +29,6 @@ function getPost(postId) {
 function getFilters() {
     return instance.get("Filters");
 }
-
-// function searchPosts(postId) {
-//     return axios.get("https://localhost:44309/Search/Autos" + postId);
-// }
 
 export {
     getPost,

@@ -41,7 +41,7 @@
 </template>
 
 <script>
-const axios = require("axios");
+import axios from "axios";
 
 export default {
   components: {
@@ -49,8 +49,6 @@ export default {
   },
   watch: {
     "$route.query": function () {
-      this.page = 1;
-      this.totalResults = 0;
       this.updatePosts();
     },
     page: function () {
@@ -70,9 +68,7 @@ export default {
     updatePosts() {
       const self = this;
 
-      if (!self.posts.length) {
-        self.$store.dispatch("setLoading", true);
-      }
+      self.$store.dispatch("setLoading", true);
 
       let url = "https://localhost:44309/Search/Autos";
 
@@ -93,6 +89,7 @@ export default {
           self.totalResults = response.data.total;
         })
         .catch(function (error) {
+          self.totalResults = 0;
           console.log(error);
         })
         .then(function () {

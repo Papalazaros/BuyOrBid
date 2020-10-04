@@ -146,7 +146,6 @@ export default {
     self.initializeFiltersFromUrl();
     self.$refs.form.validate();
   },
-
   computed: {
     getAvailableValues() {
       const self = this;
