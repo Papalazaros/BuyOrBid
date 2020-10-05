@@ -294,6 +294,7 @@ export default {
     clearFilter() {
       const self = this;
       self.initializeDefaultFilters();
+      self.handleFilter();
     },
     handleFilter() {
       const self = this;

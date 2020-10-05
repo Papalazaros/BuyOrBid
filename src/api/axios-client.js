@@ -28,7 +28,12 @@ function getFilters() {
     return instance.get("Filters");
 }
 
+function execute(config) {
+    return instance(config);
+}
+
 export {
     getPost,
-    getFilters
+    getFilters,
+    execute,
 };

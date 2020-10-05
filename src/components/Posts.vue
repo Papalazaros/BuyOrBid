@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { execute } from "../api/axios-client";
 
 export default {
   components: {
@@ -87,7 +87,7 @@ export default {
     updatePosts() {
       const self = this;
 
-      let url = "https://localhost:44309/Search/Autos";
+      let url = "Search/Autos";
 
       if (self.$route.query.filter) {
         url += self.$route.query.filter;
@@ -99,19 +99,13 @@ export default {
         pageSize: self.pageSize,
       };
 
-      axios
-        .get(url, { params })
+      execute({ url, params })
         .then(function (response) {
           self.posts = response.data.results;
           self.totalResults = response.data.total;
         })
-        .catch(function (error) {
+        .catch(function () {
           self.totalResults = 0;
-          console.log(error);
-        })
-        .then(function () {
-          self.$store.dispatch("setLoading", false);
-          self.requestSent = false;
         });
     },
   },
