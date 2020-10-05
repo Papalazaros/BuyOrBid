@@ -81,8 +81,11 @@ export default {
   methods: {
     setPage(page) {
       const self = this;
-      self.page = page;
-      self.updatePosts();
+
+      if (self.page != page) {
+        self.page = page;
+        self.updatePosts();
+      }
     },
     updatePosts() {
       const self = this;

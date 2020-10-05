@@ -15,7 +15,8 @@
       <v-spacer />
       <Search />
       <v-spacer />
-      <v-icon
+      <v-btn
+        text
         :disabled="
           $store.getters.isLoading ||
             !(
@@ -26,15 +27,19 @@
             )
         "
         @click="filterDrawer = !filterDrawer"
-        color="white"
+        fab
+        small
+        color="primary"
       >
-        mdi-filter
-      </v-icon>
+        <v-icon color="white">
+          mdi-filter
+        </v-icon>
+      </v-btn>
       <v-btn
-        elevation="0"
+        text
         @click="dialog = !dialog"
         fab
-        x-small
+        small
         color="primary"
       >
         <v-icon color="white">
